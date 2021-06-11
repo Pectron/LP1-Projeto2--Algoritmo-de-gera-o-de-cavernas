@@ -34,7 +34,18 @@ namespace MyCaves
             }
         }
 
-        
+        private int GetPosicaoOver(int pos)
+        {
+            //se 10 fica 0, se 11 fica 1, ..
+            if(pos >= 10)                
+                pos -= 10; 
+
+            //se -1 fica 9, se -2 fica 8, ..
+            else if(pos < 0)
+                pos += 10;
+
+            return pos;
+        }
 
         //funcao retorna true se tiver >= 5 casas rock vizinhas
         public bool VerificarCasasVizinhasRock(int x, int y)
@@ -46,7 +57,10 @@ namespace MyCaves
             {
                 for(int j = -1; j < 2; j++)
                 {
-                    if(world[x+1, y+j] == TipoTerreno.Rock)
+                    int X = GetPosicaoOver(x+i);
+                    int Y = GetPosicaoOver(y+j);
+
+                    if(world[X, Y] == TipoTerreno.Rock)
                         numRocks += 1;
                 }
             }
