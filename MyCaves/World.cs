@@ -71,7 +71,15 @@ namespace MyCaves
             return casasRock;
         }
 
-        public TipoTerreno GetValuePos(int x, int y) => world[x,y];
+        public TipoTerreno GetValuePos(int x, int y)
+        {
+            return world[x,y];
+        }
+
+        public void SetValuePos(int x, int y, TipoTerreno terreno)
+        {
+            world[x,y] = terreno;
+        }
         
 
         public void CopyOtherWorld(TipoTerreno[,] otherWorld)
