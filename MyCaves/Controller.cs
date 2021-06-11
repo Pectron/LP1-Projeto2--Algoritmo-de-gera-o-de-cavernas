@@ -28,7 +28,7 @@ namespace MyCaves
                     case 1:
                         int n = InsertNewWorld();
                         Algoritmo(n);
-                        view.ShowWorld();
+                        view.ShowWorld(words[0]);
                         break;
                     default:
                         view.InvalidOption();
