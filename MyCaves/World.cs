@@ -1,3 +1,5 @@
+using System.Random;
+
 namespace MyCaves
 {
     public class World
@@ -10,7 +12,8 @@ namespace MyCaves
         public World(int numLinhas, int numColunas)
         {
             world = new TipoTerreno[numLinhas, numColunas];
-            //gerar mundo
+            
+            GenerateRandomWorld();
         }
 
 
@@ -21,7 +24,12 @@ namespace MyCaves
                 for(int y = 0; y < world.GetLength(1); y++)
                 {
                     Random rand = new Random();
-                    
+                    int value = rand.Next(1,3);
+
+                    if(value == 1)
+                        world = TipoTerreno.Ground;
+                    else
+                        world = TipoTerreno.Rock;
                 }
             }
         }
