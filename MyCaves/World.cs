@@ -1,4 +1,4 @@
-using System.Random;
+using System;
 
 namespace MyCaves
 {
@@ -6,17 +6,20 @@ namespace MyCaves
     {
         public int NumLinhas {get; set;}
         public int NumColunas{get; set;}
-
         private TipoTerreno[,] world;
 
         public World(int numLinhas, int numColunas)
         {
-            world = new TipoTerreno[numLinhas, numColunas];
+            NumLinhas = numLinhas;
+            NumColunas = numColunas;
+            
+            world = new TipoTerreno[NumLinhas, NumColunas];
 
             GenerateRandomWorld();
         }
 
 
+        //Gera um mundo aleatorio com rock e ground
         private void GenerateRandomWorld()
         {   
             for(int x = 0; x < world.GetLength(0); x++)
@@ -27,22 +30,38 @@ namespace MyCaves
                     int value = rand.Next(1,3);
 
                     if(value == 1)
-                        world = TipoTerreno.Ground;
+                        world[x,y] = TipoTerreno.Ground;
                     else
-                        world = TipoTerreno.Rock;
+                        world[x,y] = TipoTerreno.Rock;
                 }
             }
         }
 
-        private int GetPosicaoOver(int pos)
+        //Funcao usada quando o x ou y ultrapassam o numero limite do mapa
+        private int GetPosicaoOver(int pos, bool linhas)
         {
-            //se 10 fica 0, se 11 fica 1, ..
-            if(pos >= 10)                
-                pos -= 10; 
-
-            //se -1 fica 9, se -2 fica 8, ..
-            else if(pos < 0)
-                pos += 10;
+            if(linhas)
+            {
+                if(pos >= NumLinhas)
+                {
+                    pos -= NumLinhas;
+                }
+                else if(pos < 0)
+                {
+                    pos += NumLinhas;
+                }
+            }
+            else
+            {
+                if(pos >= NumColunas)
+                {
+                    pos -= NumColunas;
+                }
+                else if(pos < 0)
+                {
+                    pos += NumColunas;
+                }
+            }
 
             return pos;
         }
@@ -57,9 +76,9 @@ namespace MyCaves
             {
                 for(int j = -1; j < 2; j++)
                 {
-                    int X = GetPosicaoOver(x+i);
-                    int Y = GetPosicaoOver(y+j);
-
+                    int X = GetPosicaoOver(x+i, true);
+                    int Y = GetPosicaoOver(y+j, false);
+                    
                     if(world[X, Y] == TipoTerreno.Rock)
                         numRocks += 1;
                 }
@@ -71,24 +90,28 @@ namespace MyCaves
             return casasRock;
         }
 
+        //obter o tipo de terreno no local do mapa
         public TipoTerreno GetValuePos(int x, int y)
         {
+            int X = GetPosicaoOver(x, true);
+            int Y = GetPosicaoOver(y, false);
             return world[x,y];
         }
 
+        //alterar o tipo de terreno no local do mapa
         public void SetValuePos(int x, int y, TipoTerreno terreno)
         {
             world[x,y] = terreno;
         }
         
-
-        public void CopyOtherWorld(TipoTerreno[,] otherWorld)
+        //copiar mundo
+        public void CopyOtherWorld(World otherWorld)
         {
-            for(int x = 0; x < world.GetLength(0); x++)
+            for(int x = 0; x < NumLinhas; x++)
             {
-                for(int y = 0; y < world.GetLength(1); y++)
+                for(int y = 0; y < NumColunas; y++)
                 {
-                    world = otherWorld.GetValuePos(x,y);
+                    world[x,y] = otherWorld.GetValuePos(x,y);
                 }
             }
         }

@@ -6,7 +6,10 @@ namespace MyCaves
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Controller controller = new Controller(args);
+            View view = new View();
+
+            controller.Run(view);
         }
     }
 }
