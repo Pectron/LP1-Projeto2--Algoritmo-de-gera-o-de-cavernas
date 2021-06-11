@@ -7,7 +7,7 @@ namespace MyCaves
         public int NumLinhas {get; set;}
         public int NumColunas{get; set;}
 
-        public TipoTerreno[,] world;
+        private TipoTerreno[,] world;
 
         public World(int numLinhas, int numColunas)
         {
@@ -69,6 +69,20 @@ namespace MyCaves
                 casasRock = true;
 
             return casasRock;
+        }
+
+        public TipoTerreno GetValuePos(int x, int y) => world[x,y];
+        
+
+        public void CopyOtherWorld(TipoTerreno[,] otherWorld)
+        {
+            for(int x = 0; x < world.GetLength(0); x++)
+            {
+                for(int y = 0; y < world.GetLength(1); y++)
+                {
+                    world = otherWorld.GetValuePos(x,y);
+                }
+            }
         }
     }
 }
