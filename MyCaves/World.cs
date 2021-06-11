@@ -12,7 +12,7 @@ namespace MyCaves
         public World(int numLinhas, int numColunas)
         {
             world = new TipoTerreno[numLinhas, numColunas];
-            
+
             GenerateRandomWorld();
         }
 
@@ -32,6 +32,29 @@ namespace MyCaves
                         world = TipoTerreno.Rock;
                 }
             }
+        }
+
+        
+
+        //funcao retorna true se tiver >= 5 casas rock vizinhas
+        public bool VerificarCasasVizinhasRock(int x, int y)
+        {
+            bool casasRock = false;
+            int numRocks = 0;
+
+            for(int i = -1; i < 2; i++)
+            {
+                for(int j = -1; j < 2; j++)
+                {
+                    if(world[x+1, y+j] == TipoTerreno.Rock)
+                        numRocks += 1;
+                }
+            }
+
+            if(numRocks >= 5)
+                casasRock = true;
+
+            return casasRock;
         }
     }
 }
